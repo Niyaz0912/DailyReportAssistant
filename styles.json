@@ -1,0 +1,84 @@
+{
+    "app": {
+      "window_size": "800x600",
+      "theme": "System",
+      "color_theme": "blue"
+    },
+    "colors": {
+      "primary": "#3B8ED0",
+      "primary_hover": "#36719D",
+      "danger": "#E74C3C",
+      "danger_hover": "#C0392B",
+      "accent": "#FF6B35",
+      "accent_hover": "#E55A2B",
+      "background": "transparent",
+      "tab_hover_dark": "#2B2B2B",
+      "tab_hover_light": "#F0F0F0"
+    },
+    "fonts": {
+      "title": {
+        "size": 20,
+        "weight": "bold"
+      },
+      "tabs": {
+        "size": 16,
+        "weight": "bold"
+      },
+      "buttons": {
+        "size": 14,
+        "weight": "normal"
+      },
+      "input": {
+        "size": 12,
+        "weight": "normal"
+      },
+      "content": {
+        "size": 12,
+        "weight": "normal"
+      }
+    },
+    "sizes": {
+      "tab_button_height": 50,
+      "standard_button_height": 35,
+      "large_button_height": 40,
+      "add_button_width": 100,
+      "tabs_frame_width": 180,
+      "report_text_height": 150,
+      "plans_text_height": 120
+    },
+    "padding": {
+      "main_frame": 10,
+      "header_pady": 15,
+      "standard_pady": 10,
+      "small_pady": 5,
+      "button_padx": 10,
+      "tabs_padx": 10
+    },
+    "icons": {
+      "app_icon": "✏️",
+      "tasks_tab": "📝",
+      "report_tab": "📄",
+      "stats_tab": "📈",
+      "load_icon": "📥",
+      "add_icon": "➕",
+      "complete_icon": "✅",
+      "delete_icon": "🗑️",
+      "update_icon": "🔄",
+      "plans_icon": "🎯"
+    },
+    "texts": {
+      "app_title": "Планы и отчеты",
+      "tasks_tab": "Задачи",
+      "report_tab": "Отчет",
+      "stats_tab": "Статистика",
+      "load_button": "Загрузить вчерашние планы",
+      "add_button": "Добавить",
+      "complete_button": "Отметить выполненными",
+      "delete_button": "Удалить выделенное",
+      "update_button": "Обновить и скопировать отчет",
+      "task_placeholder": "Введите новую задачу...",
+      "tasks_label": "Текущие задачи:",
+      "report_label": "Отчет за сегодня:",
+      "stats_label": "Статистика за неделю"
+    }
+  }
