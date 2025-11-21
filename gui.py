@@ -4,6 +4,7 @@ from core import ReportManager
 import datetime
 import json
 import os
+import re
 
 # Настройка темы по умолчанию
 ctk.set_appearance_mode("System")
@@ -417,8 +418,18 @@ class ReportAssistant:
             messagebox.showinfo("Инфо", "Планы уже загружены")
             return
         
+        # Получаем текущие задачи без нумерации для проверки дубликатов
         current_text = self.tasks_list.get("1.0", "end-1c")
-        new_plans = [plan for plan in plans if plan not in current_text]
+        current_tasks = set()
+        for line in current_text.split('\n'):
+            line = line.strip()
+            if line:
+                # Убираем нумерацию для сравнения
+                task = re.sub(r'^\d+[.)]\s*', '', line)
+                if task:
+                    current_tasks.add(task)
+        
+        new_plans = [plan for plan in plans if plan not in current_tasks]
         
         if not new_plans:
             messagebox.showinfo("Инфо", "Все планы уже добавлены")
@@ -426,30 +437,42 @@ class ReportAssistant:
             return
         
         for plan in new_plans:
-            self.tasks_list.insert("end", f"• {plan}\n")
+            self.tasks_list.insert("end", f"{plan}\n")
         
         self.loaded_plans_key = source_key
+        self.renumber_tasks()
         messagebox.showinfo("Успех", f"Загружено {len(new_plans)} планов!")
 
     def add_task(self):
         """Добавление задачи"""
         task = self.task_entry.get().strip()
         if task:
-            self.tasks_list.insert("end", f"• {task}\n")
+            self.tasks_list.insert("end", f"{task}\n")
             self.task_entry.delete(0, "end")
+            self.renumber_tasks()
 
     def complete_selected(self):
         """Отметка выполненных задач"""
         try:
             selected_text = self.tasks_list.get("sel.first", "sel.last")
             if selected_text:
-                tasks = [line.strip('• \n') for line in selected_text.split('\n') if line.strip()]
+                # Убираем нумерацию и лишние пробелы
+                tasks = []
+                for line in selected_text.split('\n'):
+                    line = line.strip()
+                    if line:
+                        # Убираем нумерацию в формате "1. задача" или "1) задача"
+                        line = re.sub(r'^\d+[.)]\s*', '', line)
+                        if line:
+                            tasks.append(line)
+                
                 for task in tasks:
                     if task:
                         self.manager.add_completed_task(task)
                 
                 # Удаляем выделенный текст
                 self.tasks_list.delete("sel.first", "sel.last")
+                self.renumber_tasks()
                 self.update_report()
                 messagebox.showinfo("Успех", f"Отмечено {len(tasks)} задач!")
         except:
@@ -461,8 +484,34 @@ class ReportAssistant:
             if self.tasks_list.tag_ranges("sel"):
                 if messagebox.askyesno("Подтверждение", "Удалить выделенные задачи?"):
                     self.tasks_list.delete("sel.first", "sel.last")
+                    self.renumber_tasks()
         except:
             messagebox.showwarning("Внимание", "Выделите задачи для удаления!")
+    
+    def renumber_tasks(self):
+        """Пересчет нумерации задач"""
+        try:
+            current_text = self.tasks_list.get("1.0", "end-1c")
+            if not current_text.strip():
+                return
+            
+            # Получаем все строки и убираем старую нумерацию
+            lines = current_text.split('\n')
+            tasks = []
+            for line in lines:
+                line = line.strip()
+                if line:
+                    # Убираем нумерацию в формате "1. задача" или "1) задача"
+                    line = re.sub(r'^\d+[.)]\s*', '', line)
+                    if line:
+                        tasks.append(line)
+            
+            # Перезаписываем с новой нумерацией
+            self.tasks_list.delete("1.0", "end")
+            for i, task in enumerate(tasks, 1):
+                self.tasks_list.insert("end", f"{i}. {task}\n")
+        except Exception as e:
+            print(f"Ошибка при пересчете нумерации: {e}")
 
     def update_plans_label(self):
         """Обновление метки планов"""
