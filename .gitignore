@@ -50,3 +50,14 @@ DailyReportAssistant.spec
 
 dist/
 build/
+
+# Скрипты сборки
+build.ps1
+build_exe.bat
+build_exe.ps1
+make_exe.ps1
+run.bat
+run.sh
+
+# Файлы данных приложения (локальные)
+data.json
