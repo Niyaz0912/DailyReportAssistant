@@ -44,3 +44,9 @@ Thumbs.db
 
 # Файлы приложения
 main_backup.py
+
+# Файлы PyInstaller
+DailyReportAssistant.spec
+
+dist/
+build/
